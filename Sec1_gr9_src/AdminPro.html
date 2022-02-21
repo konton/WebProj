@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <style>
+        body {
+            background-image: url("/static/image/bglogin2.jpg");
+
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: 100% 100%;
+            background-color: rgba(255, 255, 255, 0.596);
+        }
+
+        * {
+            color: White;
+            font-family: 'Prompt', sans-serif;
+        }
+
+        .form-control {
+            width: 50%;
+        }
+
+        .col {
+            display: flex;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 20px;
+            flex: 25%;
+            text-align: left;
+        }
+    </style>
+
+    <head>
+        <title>The 2CJK Shabu | Admin</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+            integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+        <link rel="stylesheet" href="/static/css/nav.css">
+        <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@100;500&display=swap" rel="stylesheet">
+        <script src="https://kit.fontawesome.com/43fed03179.js" crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+
+    </head>
+
+    <nav>
+        <ul class="nav">
+            <li>
+                <a href="Home.html">Home</a>
+            </li>
+            <li>
+                <div class="dropdown">
+                    <a href="Menu2.html">Menu</a>
+                    <div class="dropdown-content">
+                        <a href="Menu2.html#promotion"> Promotion </a>
+                        <a href="Menu2.html#shabuset"> Shabu Set </a>
+                        <a href="Menu2.html#ingredient"> Ingredient </a>
+                    </div>
+            </li>
+            <li>
+                <a href="Searching.html">Search</a>
+            </li>
+            <li>
+                <a href="about.html">About us</a>
+            </li>
+            <li>
+                <a href="Contact.html">Contact</a>
+            </li>
+            <li style="font-family: 'Prompt', sans-serif;">
+                <a href="login.html"><i class="fas fa-user"></i></a>
+            </li>
+        </ul>
+    </nav>
+    <script>
+        async function AdminPro(url, method, sentData = {}) {
+            let data;
+            if (method == "Selectall") {
+                let response = await fetch(url, {
+                    method: 'get'
+                });
+                data = await response.json();
+            }
+            else if (method == "Select") {
+                let response = await fetch(url, {
+                    method: 'GET'
+                })
+                data = await response.json();
+            } else if (method == "Update") {
+                let response = await fetch(url, {
+                    method: "PUT",
+                    headers: {
+                        Accept: "application/json",
+                        "Content-type": "application/json"
+                    },
+                    body: JSON.stringify(sentData),
+                });
+                data = await response.json();
+            } else if (method == "Delete") {
+                let response = await fetch(url, {
+                    method: "delete",
+                    headers: {
+                        Accept: "application/json",
+                        "Content-type": "application/json"
+                    },
+                    body: JSON.stringify(sentData),
+                });
+                data = await response.json();
+            }else if (method == "Insert") {
+                let response = await fetch(url, {
+                    method: 'POST'
+                    , headers: {
+                        Accept: "application/json",
+                        "Content-type": "application/json"
+                    }, body: JSON.stringify(sentData),
+                });
+            data = await response.json();
+        }
+            return data;
+        }
+
+        //Test case
+        //Pro_ID:100
+        //Pro_Name:Test
+        //Pro_Desc: For test
+        //Pro_StartDate: 2020-01-01
+        //Pro_Enddate:2021-01-01
+        //-----------------------------
+        //Pro_ID:101
+        //Pro_Name:Test2
+        //Pro_Desc: For test2
+        //Pro_StartDate: 2021-01-01
+        //Pro_Enddate:2022-01-01
+        function Select() {
+            var temp = document.querySelector("#id").value;
+         
+            AdminPro("http://localhost:3030/getpro/" + temp, "Select").then(
+                (data) => {                            
+                    let tex = "";
+                    //Pro_ID ,Pro_Name ,Pro_Desc, Pro_StartDate, Pro_EndDate,Pro_Price,Pro_image
+                    tex += `<div class="col" style="background-color: rgb(255, 178, 102,0.596);width: auto; border-radius: 20px; padding: 50px;"> 
+                                <ul>ID customer ${data.data.Pro_ID}<br/> Promotion name:${data.data.Pro_Name}<br/> Promotion Description: ${data.data.Pro_Desc}<br/> Start date: ${data.data.Pro_StartDate}<br/> 
+                                End date: ${data.data.Pro_EndDate} <br/> Promotion Price: ${data.data.Pro_Price}<br/><img src=${data.data.Pro_image}></ul> </div>`; 
+                    output.innerHTML = tex;
+                    
+                }
+               
+        )
+    }
+        function Selectall() {
+            AdminPro("http://localhost:3030/infoPro", "Selectall").then(
+                (data) => {
+                    console.log("data",data);
+                    let text = "";
+                    let o = document.querySelector("#output");
+                    for (const x of data.data) {
+                        let ids = x.Pro_ID;
+
+                        let fname = x.Pro_Name;
+                        let lname = x.Pro_Desc;
+                        let Email = x.Pro_StartDate;
+                        let Uname = x.Pro_EndDate;
+                        let img = x.Pro_image
+                        text += `<div class="col" style="background-color: rgb(255, 178, 102,0.596);width: auto; border-radius: 20px; padding: 50px;"> 
+                                <ul>ID Promotion ${ids}<br/> Promotion name:${fname}<br/> Promotion Description: ${lname}<br/> Promotion Start date: ${Email}<br/> 
+                                Promotion End date: ${Uname}<br/> <img src=${img} style='width:300px;'></ul> </div>`;
+                    }
+                    output.innerHTML = text;
+                }
+            )
+        }
+        function Delete() {
+            let b = {
+                "ID": document.querySelector("#id").value
+            }
+            AdminPro("http://localhost:3030/delePro", "Delete", b).then(
+                (data) => {
+                    console.log(data)
+                });
+        }
+        function Update() {
+            // let g = document.querySelector("#id").value;
+            // Pro_ID ,Pro_Name ,Pro_Desc, Pro_StartDate, Pro_EndDate
+            let a = {
+                "Pro_ID": document.querySelector("#id").value,
+                "Pro_Name": document.querySelector("#name").value,
+                "Pro_Desc": document.querySelector("#desc").value,
+                "Pro_StartDate": document.querySelector("#Sdate").value,
+                "Pro_EndDate": document.querySelector("#Edate").value,
+            }
+            AdminPro("http://localhost:3030/upPro", "Update", a).then(
+                (data) => {
+                    console.log(data)
+                    alert("Update Complete");
+                });
+        }
+        function Insert() {
+            var data = [{
+                "Pro_ID": document.querySelector("#id").value,
+                "Pro_Name": document.querySelector("#name").value,
+                "Pro_Desc": document.querySelector("#desc").value,
+                "Pro_StartDate": document.querySelector("#Sdate").value,
+                "Pro_EndDate": document.querySelector("#Edate").value,
+
+            }]
+
+            AdminPro("http://localhost:3030/inpro", "Insert", data).then(
+                (data) => {
+                    console.log(data)
+                    alert("Insert Complete");
+                }
+            )
+        }
+
+
+
+    </script>
+
+<body>
+    <div class="container" style="background-color: #d0a772;width: auto; border-radius: 20px; padding: 50px;">
+        <h2>Manage Promotion</h2>
+        <!-- Form for input -->
+        <div class="mb-3" style="width: 50%;">
+            <label for="exampleFormControlInput1" class="form-label">Pro_ID</label>
+            <input type="email" class="form-control" id="id" placeholder="Disabled input" aria-label="Disabled input example">
+            <label for="exampleFormControlTextarea1" class="form-label">Pro_Name</label>
+            <input type="email" class="form-control" id="name" placeholder="Pro_Name">
+            <label for="exampleFormControlTextarea1"  class="form-label">Pro_Desc</label>
+            <input type="email" class="form-control"  id="desc" placeholder="Pro_Desc">
+            <label for="exampleFormControlTextarea1"  class="form-label">Pro_StartDate</label>
+            <input type="email" class="form-control"  id="Sdate" placeholder="Pro_StartDate" required>
+            <label for="exampleFormControlTextarea1" class="form-label">Pro_EndDate</label>
+            <input type="email" class="form-control"  id="Edate" placeholder="Pro_EndDate name" required>
+        </div>
+        <button type="button" class="btn btn-primary" style="background-color: rgba(134, 65, 65, 1); border-color: rgba(134, 65, 65, 1)" onclick="Selectall()"> All Promotion</button>
+        <button type="button" class="btn btn-primary" style="background-color: rgba(134, 65, 65, 1); border-color: rgba(134, 65, 65, 1)" onclick="Select()"> Select Promotion</button>
+        <button type="button" class="btn btn-primary" style="background-color: rgba(134, 65, 65, 1); border-color: rgba(134, 65, 65, 1)" onclick="Insert()"> Insert Promotion</button>
+        <button type="button" class="btn btn-primary" style="background-color: rgba(134, 65, 65, 1); border-color: rgba(134, 65, 65, 1)" onclick="Delete()"> Delete</button>
+        <button type="button" class="btn btn-primary" style="background-color: rgba(134, 65, 65, 1); border-color: rgba(134, 65, 65, 1)" onclick="Update()"> Update</button>
+        <button type="button" class="btn btn-primary" style="background-color: rgba(134, 65, 65, 1); border-color: rgba(134, 65, 65, 1)" onclick="document.location='Admin.html'"> Back</button>
+        <div class="row" id="output" >
+        </div>
+        
+
+         
+       
+    </div>
+    
+</body>
+
+</html>
+
+</html>

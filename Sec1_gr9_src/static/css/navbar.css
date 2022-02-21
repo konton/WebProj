@@ -1,0 +1,44 @@
+body 
+{
+    background-image: url("static/image/bglogin2.jpg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: 100% 100%;
+}
+
+
+
+
+
+/*--Nav at Menu--*/
+.navbarMenu
+{
+    background-color: #f06933;
+    list-style: none;
+    display:flex;
+    flex-direction: row;
+    padding-top: 18px;
+    padding-bottom: 18px;
+    margin: 0px;
+}
+.navbarMenu a
+{
+    color: #fdfefe;
+    padding-top: 18px;
+    padding-bottom: 18px;
+    padding-left: 200px;
+    padding-right: 200px;
+    text-decoration: none;   
+}
+.navbarMenu a:hover
+{
+    background-color: #8f040452;   
+}
+
+body main{
+    border: 5px solid transparent;
+    color: rgb(0, 0, 0);
+    text-align:left;
+    background-color: rgba(255, 255, 255, 0.596);
+    padding-bottom: 5%;
+}

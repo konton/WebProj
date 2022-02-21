@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>The 2CJK Shabu | Log In</title>
+    <link rel="stylesheet" href="static/css/LoginSignup.css">
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@100;500&display=swap" rel="stylesheet">
+    
+</head>
+
+<style>
+    form {
+        /* height: 370px; */
+        width: 640px;
+        margin: 160px 450px;
+    }
+    
+    * {
+        font-family: 'Prompt', sans-serif;
+    }
+    body {
+            background-image: url("static/image/bglogin2.jpg");
+  
+        }
+</style>
+<script>
+    
+     async function login(url, method, sentData = {}) {
+        let data;
+        if (method == "Select") {
+            let response = await fetch(url, {
+                method: 'get'
+            });
+            data = await response.json();
+        }
+        return data;
+    }
+    function Select() {
+        var temp = document.querySelector("#user").value;
+        var pass = document.querySelector("#pass").value;
+        
+        login("http://localhost:3030/info/"+temp+pass, "Select").then(
+            (data) => {
+                //console.log(data);
+                for(const x of data.data){
+                   // console.log(x.Uname);
+                    if(temp == x.Uname && pass == x.Pwd){
+                        console.log(x.checkAdmin);
+                       
+                        console.log("In loop");
+                        if(x.checkAdmin == 1){ 
+                            alert("WELCOME ADMIN ")
+                            window.location = "Admin.html";
+                        }else if(x.checkAdmin==0){
+                            console.log("onthis");
+                            alert("Welcome user")
+                            window.location = "Home.html";
+                        }
+                    }
+                  
+                    
+                }
+            }
+        )
+    }
+</script>
+<body>
+    <form>
+        <h1>Login Form</h1>
+        <fieldset>
+            <input type="text" id="user" placeholder="E-mail or Username" required><br>
+            <input type="text" id="pass"  pattern="[A-Za-z0-9]{6,}" title="Must have at least 6 character"
+                placeholder="Password" required><br>
+            <input type="checkbox" name="remember" value="yes"> Remember me?<br>
+            <button type="submit" onclick="Select()">Login</button><br>
+            <a href="Signup.html">Register</a><br>
+            <button type="button" class="cancelbtn"><a href="Home.html">Cancel</a></button>
+        </fieldset>
+    </form>
+</body>
+
+</html>

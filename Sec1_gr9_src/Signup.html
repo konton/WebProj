@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>The 2CJK Shabu | Sign Up</title>
+    <link rel="stylesheet" href="static/css/LoginSignup.css">
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@100;500&display=swap" rel="stylesheet">
+</head>
+<style>
+    body {
+            background-image: url("static/image/bglogin2.jpg");
+       
+        }
+</style>
+<script>
+    var increase = 1;
+    var count = 0;
+    var checking;
+    
+    async function signup(url, method, sentData = {}) {
+        let data;
+        if (method == "Selectall") {
+            let response = await fetch(url, {
+                method: 'get'
+            });
+            data = await response.json();
+        }else if (method == "Insert") {
+            let response = await fetch(url, {
+                method: 'POST'
+                , headers: {
+                    Accept: "application/json",
+                    "Content-type": "application/json"
+                }, body: JSON.stringify(sentData),
+            });
+            data = await response.json();
+        }
+        return data;
+    }
+    function Insert() {
+        let a = document.querySelector("#First").value;
+        let b = document.querySelector("#Last").value;
+        let c = document.querySelector("#E-mail").value;
+        let d = document.querySelector("#User").value;
+        let e = document.querySelector("#Pass").value
+    
+                var data = [{
+                    "ID": count,
+                    "Fname": a,
+                    "Lname": b,
+                    "Email": c,
+                    "Uname": d,
+                    "Pwd": e,
+                    "checkAdmin": 0
+                }]
+                count++;
+            
+            
+    
+        signup("http://localhost:3030/inus", "Insert", data).then(
+            (data) => {
+                console.log(data);
+                alert("Register complete");
+                // let a = document.querySelector("#First").value;
+                // let b = document.querySelector("#Last").value;
+                // let c = document.querySelector("#E-mail").value;
+                // let d = document.querySelector("#User").value;
+                // let e = document.querySelector("#Pass").value
+                // var data = [{
+                //     "ID": count,
+                //     "Fname": a,
+                //     "Lname": b,
+                //     "Email": c,
+                //     "Uname": d,
+                //     "Pwd": e,
+                //     "checkAdmin": 0
+                // }]
+                // count++;
+            }
+        )
+    
+    }
+    function Selectall() {
+        signup("http://localhost:3030/info", "Selectall").then(
+            (data) => {
+                // console.log(data);
+                // let text = "";
+                // let o = document.querySelector("#output");
+            }
+        )
+    }
+
+   //check username and password
+
+</script>
+<style>
+    form {
+
+        width: 635px;
+        height: 730px;
+        margin: 20px 450px;
+        padding-bottom: 50px;
+        border: 3px solid #f1f1f1;
+        align-content: center;
+        background-color: rgb(255, 255, 255);
+        opacity: 0.9;
+    }
+
+    p {
+        text-align: center;
+    }
+
+    * {
+        font-family: 'Prompt', sans-serif;
+    }
+</style>
+
+<body>
+    <form>
+        <h1>Register</h1>
+        <p>Create your account. It's free and only take a mintues.</p>
+        <fieldset>
+            <input type="text" id="First" name="txtFname" pattern="[A-Za-z]{1,}" title="Alphabet only"
+                placeholder="First Name" required>
+            <input type="text" id="Last" name="txtLname" pattern="[A-Za-z]{1,}" title="Alphabet only"
+                placeholder="Last Name" required>
+            <input type="text" id="User" name="txtUsername" placeholder="Username" required><br>
+            <input type="text" id="E-mail" name="txtEmail" placeholder="E-mail" required><br>
+            <input type="text" id="Pass" name="txtPw" pattern="[A-Za-z0-9]{6,}" title="Must have at least 6 character"
+                placeholder="Password" required><br>
+            <input type="text" name="txtPw" pattern="[A-Za-z0-9]{6,}" placeholder="Confirm Password" required><br><br>
+            <input type="checkbox" name="remember" value="yes"> I accept the Terms of Use & Privacy Policy.<br><br>
+            <button type="button" onclick="Insert()">Register Now</button><br>
+            <button type="button" class="cancelbtn"><a href="Home.html">Cancel</a></button>
+            <p>Already have an account?<a href="login.html">Sign in</a></p>
+        </fieldset>
+    </form>
+</body>
+
+</html>
